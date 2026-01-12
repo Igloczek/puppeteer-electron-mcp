@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { registerVisionTools } from "@/tools/vision.ts";
 import { registerActionTools } from "@/tools/actions.ts";
+import packageJson from "../package.json";
 
 /**
  * Electron Bridge MCP Server
@@ -9,7 +10,7 @@ import { registerActionTools } from "@/tools/actions.ts";
  */
 const server = new McpServer({
   name: "puppeteer-electron-mcp",
-  version: "1.0.0",
+  version: packageJson.version,
 });
 
 // Register tool modules

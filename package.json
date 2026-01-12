@@ -1,26 +1,28 @@
 {
-  "name": "puppeteer-electron-mcp",
   "version": "1.0.0",
+  "name": "puppeteer-electron-mcp",
   "description": "MCP server to bridge and control Electron applications via Puppeteer",
-  "author": "Bartek Igielski<bartek@igielski.dev>",
+  "repository": "github:puppeteer-electron-mcp",
+  "homepage": "https://github.com/Igloczek/puppeteer-electron-mcp",
+  "license": "MIT",
+  "author": "Bartek Igielski",
   "keywords": [
     "mcp",
     "electron",
     "puppeteer",
     "automation"
   ],
-  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
     "puppeteer-electron-mcp": "./dist/index.js"
   },
   "scripts": {
-    "start": "bun run src/index.ts",
+    "start": "bun run dist/index.js",
     "dev": "bun run --watch src/index.ts",
     "lint": "bunx biome check src",
     "format": "bunx biome format --write src",
-    "build": "bun build ./src/index.ts --target=node --outfile dist/index.js"
+    "build": "bun build ./src/index.ts --target=node --external @modelcontextprotocol/sdk --external puppeteer-core --external zod --outfile dist/index.js"
   },
 
   "dependencies": {
