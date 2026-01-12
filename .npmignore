@@ -1,5 +1,6 @@
 node_modules
 src
-*.md
+scripts
+DEVELOPMENT.md
 tsconfig.json
 bun.lock
