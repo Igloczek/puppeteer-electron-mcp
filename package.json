@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "puppeteer-electron-mcp",
   "description": "MCP server to bridge and control Electron applications via Puppeteer",
   "repository": {
