@@ -1,15 +1,19 @@
 import puppeteer, { type Browser, type Page } from "puppeteer-core";
 import { type CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
+import { log, logError } from "@/lib/logger";
+
 const REMOTE_DEBUG_PORT = process.env.ELECTRON_PORT || "9222";
 
 export async function getPage(): Promise<{ browser: Browser; page: Page }> {
+  log(`Connecting to Electron on port ${REMOTE_DEBUG_PORT}...`);
   try {
     const browser = await puppeteer.connect({
       browserURL: `http://localhost:${REMOTE_DEBUG_PORT}`,
       defaultViewport: null,
     });
     const pages = await browser.pages();
+    log(`Found ${pages.length} pages`);
 
     // Find a page that is not a DevTools page, or default to the first one
     const appPage =
@@ -19,12 +23,10 @@ export async function getPage(): Promise<{ browser: Browser; page: Page }> {
       throw new Error("Connected to Electron, but no active window was found.");
     }
 
+    log(`Using page: ${appPage.url()}`);
     return { browser, page: appPage };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(
-      `[Connection Error] Could not connect to Electron on port ${REMOTE_DEBUG_PORT}: ${message}`
-    );
+    logError(`Connection Error (port ${REMOTE_DEBUG_PORT})`, err);
     throw err;
   }
 }
@@ -40,20 +42,23 @@ export async function withPage(
   try {
     const { browser, page } = await getPage();
     browserInstance = browser;
-    return await callback(page);
+    log("Executing tool callback...");
+    const result = await callback(page);
+    log("Tool callback completed successfully");
+    return result;
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(`[Tool Execution Error] ${message}`);
+    logError("Tool Execution Error", error);
     return {
       isError: true,
-      content: [{ type: "text", text: `Error: ${message}` }],
+      content: [{ type: "text", text: `Error: ${error instanceof Error ? error.message : String(error)}` }],
     };
   } finally {
     if (browserInstance) {
       try {
         await browserInstance.disconnect();
+        log("Browser disconnected");
       } catch (e) {
-        console.error(`[Cleanup Error] Failed to disconnect browser: ${e}`);
+        logError("Cleanup Error", e);
       }
     }
   }

@@ -20,6 +20,12 @@ To run the server in watch mode:
 bun run dev
 ```
 
+To enable logging during development:
+
+```bash
+MCP_LOG_PATH="./mcp.log" bun run dev
+```
+
 ## Building the Project
 
 To bundle the project into a single JavaScript file for distribution:

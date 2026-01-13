@@ -51,6 +51,20 @@ By default, the server connects to port `9222`. If your application uses a diffe
 }
 ```
 
+## Debugging
+
+If you encounter issues, you can enable file logging by providing a path to a log file via the `MCP_LOG_PATH` environment variable:
+
+```json
+"puppeteer-electron-mcp": {
+  "command": "npx",
+  "args": ["-y", "puppeteer-electron-mcp"],
+  "env": {
+    "MCP_LOG_PATH": "/path/to/your/mcp-server.log"
+  }
+}
+```
+
 ## Available Tools
 Once connected, the following tools become available to the AI:
 ```
